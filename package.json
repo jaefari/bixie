@@ -29,5 +29,11 @@
     "swagger-stats": "^0.99.2",
     "swagger-ui-express": "^4.1.6",
     "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/mocha": "^8.2.2",
+    "chai": "^4.3.4",
+    "mocha": "^9.0.2",
+    "supertest": "^6.1.3"
   }
 }
