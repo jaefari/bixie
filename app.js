@@ -5,6 +5,9 @@ const expressWinston = require('express-winston');
 const cors = require('cors');
 const debug = require('debug');
 const helmet = require('helmet');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const swaggerStats = require('swagger-stats');
 
 const config = require('./config');
 
@@ -12,7 +15,6 @@ const app = express();
 const port = config.PORT || 3000;
 const log = debug('app:main');
 
-// background service to periodically download snapshots of APIs
 require('./utils/periodicSnapshotDownloader');
 
 // loggers and routine middlewares /////////////////////////////////////////////
@@ -38,6 +40,23 @@ if (!process.env.DEBUG) {
 app.use(expressWinston.logger(loggerOptions));
 // loggers and routine middlewares /////////////////////////////////////////////
 
+// swagger /////////////////////////////////////////////////////////////////////
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Bixie',
+      version: '1.0.0',
+    },
+    servers: [{ url: `${config.APP_URL}:${port}/api/v1` }],
+  },
+  apis: ['./routes/*.route.js'], // files containing annotations as above
+};
+const swaggerSpec = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+if (config.NODE_ENV === 'production') app.use(swaggerStats.getMiddleware({ swaggerSpec }));
+// swagger /////////////////////////////////////////////////////////////////////
+
 // routes //////////////////////////////////////////////////////////////////////
 // health check
 app.get('/', (req, res) => res.status(200).send('ok'));
@@ -55,6 +74,8 @@ app.use((err, req, res, next) => {
 
 module.exports = app.listen(port, () => {
   console.log(`
-    Server running at http://localhost:${port}
+    Server running at ${config.APP_URL}:${port}
+    Swagger doc running at ${config.APP_URL}:${port}/api-docs
+    Stats running at ${config.APP_URL}:${port}/swagger-stats (only available with NODE_ENV=production)
     `);
 });
