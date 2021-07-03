@@ -5,21 +5,45 @@ Bixie challenge. It took roughly 4 hours to be developed.
 
 I prefered to use document based DB because of the advatnage of using flexible patterns such polymorphic pattern, hence I didn't use ODM. (for many reasons most of the time I prefer not using ORM, ODM, QueryBuilders. Of course it mainly depeneds to the project situation)
 
+## Running version
+Running version URLs are:
+```bash
+MainURL: https://bixie.herokuapp.com/
+Swagger: https://bixie.herokuapp.com/api-docs
+Stats: https://bixie.herokuapp.com/swagger-stats
+```
+
 ## Installation
 
-first install npm modules
+First, install npm modules
 ```bash
 npm i
 ```
 
 ## Usage
 
-First, fill **development.env** or any other environmentName.env and set environment variables and do one of these options 
+Then, fill **development.env** or any other environmentName.env and set environment variables and do one of these options 
 
 ```bash
 npm run dev-debug
 npm run dev
 npm run start
+```
+
+sample env file
+```bash
+MONGODB_URL = mongodb://localhost:27017
+MONGODB_DBNAME = bixie
+MONGODB_STATIONS_COLLECTION = stations
+
+APP_URL = http://localhost:8000
+PORT = 8000
+API_PREFIX = /api/v1
+
+WEATHER_SERVICE_URL = https://api.openweathermap.org/data/2.5/weather
+WEATHER_SERVICE_APPID = putYourApiKeyHere
+
+STATIONS_SERVICE_URL = https://kiosks.bicycletransit.workers.dev/phl
 ```
 
 
