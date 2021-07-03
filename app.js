@@ -12,6 +12,9 @@ const app = express();
 const port = config.PORT || 3000;
 const log = debug('app:main');
 
+// background service to periodically download snapshots of APIs
+require('./utils/periodicSnapshotDownloader');
+
 // loggers and routine middlewares /////////////////////////////////////////////
 app.use(express.json());
 app.use(cors());
