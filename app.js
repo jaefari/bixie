@@ -12,7 +12,7 @@ const swaggerStats = require('swagger-stats');
 const config = require('./config');
 
 const app = express();
-const port = config.PORT || 3000;
+const port = config.PORT;
 const log = debug('app:main');
 
 require('./utils/periodicSnapshotDownloader');
@@ -48,7 +48,7 @@ const options = {
       title: 'Bixie',
       version: '1.0.0',
     },
-    servers: [{ url: `${config.APP_URL}:${port}/api/v1` }],
+    servers: [{ url: `${config.APP_URL}/api/v1` }],
   },
   apis: ['./routes/*.route.js'], // files containing annotations as above
 };
@@ -73,9 +73,10 @@ app.use((err, req, res, next) => {
 // routes //////////////////////////////////////////////////////////////////////
 
 module.exports = app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`
-    Server running at ${config.APP_URL}:${port}
-    Swagger doc running at ${config.APP_URL}:${port}/api-docs
-    Stats running at ${config.APP_URL}:${port}/swagger-stats (only available with NODE_ENV=production)
+    Server running at ${config.APP_URL}
+    Swagger doc running at ${config.APP_URL}/api-docs
+    Stats running at ${config.APP_URL}/swagger-stats (only available with NODE_ENV=production)
     `);
 });
